@@ -1,0 +1,26 @@
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Python virtual environment
+venv/
+
+# Environment variables
+.env
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# VS Code / Cursor settings
+.vscode/
+.cursor/
+
+# macOS system files
+.DS_Store
