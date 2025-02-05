@@ -6,12 +6,13 @@ from langchain_community.document_loaders import TextLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
+import os
 
 app = Flask(__name__, static_folder='static')
 load_dotenv()
 
 
-books = pd.read_csv('.ipynb_checkpoints/books_with_emotions.csv')
+books = pd.read_csv('data/books_with_emotions.csv')
 books["large_thumbnail"] = books["thumbnail"] + "&fife=w800"
 books["large_thumbnail"] = np.where(
     books["large_thumbnail"].isna(),
@@ -20,7 +21,7 @@ books["large_thumbnail"] = np.where(
 )
 
 
-raw_documents = TextLoader(".ipynb_checkpoints/tagged_description.txt").load()
+raw_documents = TextLoader("data/tagged_description.txt").load()
 text_splitter = CharacterTextSplitter(separator="\n", chunk_size=0, chunk_overlap=0)
 documents = text_splitter.split_documents(raw_documents)
 db_books = Chroma.from_documents(documents, OpenAIEmbeddings())
