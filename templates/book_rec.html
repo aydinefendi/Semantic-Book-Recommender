@@ -23,6 +23,7 @@
 
         .gradient-background {
             background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
+            min-height: 100vh;
         }
         
         .card-shadow {
@@ -37,47 +38,54 @@
         .input-focus:focus {
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
         }
+
+        @media (max-width: 768px) {
+            .arrow-mobile {
+                display: none;
+            }
+        }
     </style>
 </head>
 
-<body class="gradient-background min-h-screen py-32" x-data="{ loading: false }">
-    <div class="container mx-auto px-4 pt-8">
+<body class="gradient-background" x-data="{ loading: false }">
+    <div class="container mx-auto px-4 py-8 md:py-32">
         <!-- Updated title with gradient -->
-        <div class="relative text-center mb-12">
-            <h1 class="text-5xl font-bold gradient-text tracking-tight mb-4">
+        <div class="relative text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-5xl font-bold gradient-text tracking-tight mb-4">
                 Semantic Book Recommender
             </h1>
-            <!-- Arrow image pointing to the input -->
+            <!-- Arrow image pointing to the input - hidden on mobile -->
             <img src="{{ url_for('static', filename='the_arrow.png') }}" 
                  alt="Arrow pointing down" 
-                 class="absolute -top-36 left-80 w-40 h-40">
+                 class="arrow-mobile absolute hidden md:block -top-36 left-80 w-40 h-40">
         </div>
         
-        <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-8 card-shadow mt-30">
-            <div class="space-y-6">
+        <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-4 md:p-8 card-shadow">
+            <div class="space-y-4 md:space-y-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         Please enter a description of a book:
                     </label>
                     <textarea 
                         id="query"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus
+                        class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg input-focus
                                focus:outline-none focus:border-blue-500
-                               text-gray-700 placeholder-gray-400"
-                        rows="4"
-                        placeholder="e.g., A story about love, adventure, and self-discovery..."></textarea>
+                               text-gray-700 placeholder-gray-400 text-base md:text-lg"
+                        rows="3"
+                        placeholder="e.g. Recommend me a book about love, adventure, and self-discovery..."></textarea>
                 </div>
                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 gap-4 md:gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="category">
                             Category
                         </label>
                         <select 
                             id="category"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus
+                            name="category"
+                            class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg input-focus
                                    focus:outline-none focus:border-blue-500
-                                   text-gray-700 bg-white">
+                                   text-gray-700 bg-white text-base md:text-lg">
                             {% for category in categories %}
                             <option value="{{ category }}">{{ category }}</option>
                             {% endfor %}
@@ -85,14 +93,15 @@
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="tone">
                             Emotional Tone
                         </label>
                         <select 
                             id="tone"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus
+                            name="tone"
+                            class="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg input-focus
                                    focus:outline-none focus:border-blue-500
-                                   text-gray-700 bg-white">
+                                   text-gray-700 bg-white text-base md:text-lg">
                             {% for tone in tones %}
                             <option value="{{ tone }}">{{ tone }}</option>
                             {% endfor %}
@@ -100,29 +109,23 @@
                     </div>
                 </div>
                 
-                <!-- Updated button section with click_me image -->
-                <div class="relative">
-                    <button 
-                        onclick="getRecommendations()"
-                        class="w-full bg-gradient-to-r from-[#FF4B2B] via-[#C084FC] to-[#7C3AED]
-                               text-white py-3 px-6 rounded-lg shadow-lg 
-                               hover:from-[#FF8F71] hover:via-[#A855F7] hover:to-[#6D28D9]
-                               transform hover:scale-[1.02] transition-all duration-200
-                               focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2
-                               disabled:opacity-50 disabled:cursor-not-allowed
-                               font-semibold text-lg"
-                        x-bind:disabled="loading"
-                        x-text="loading ? 'Finding Books...' : 'Find Recommendations'">
-                    </button>
-                    <!-- Click me image -->
-                    <img src="{{ url_for('static', filename='click_me.png') }}" 
-                         alt="Click me" 
-                         class="absolute -right-40 bottom-4 w-40 h-40">
-                </div>
+                <button 
+                    onclick="getRecommendations()"
+                    title="Find book recommendations"
+                    class="w-full bg-gradient-to-r from-[#FF4B2B] via-[#C084FC] to-[#7C3AED]
+                           text-white py-3 px-6 rounded-lg shadow-lg 
+                           hover:from-[#FF8F71] hover:via-[#A855F7] hover:to-[#6D28D9]
+                           transform hover:scale-[1.02] transition-all duration-200
+                           focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2
+                           disabled:opacity-50 disabled:cursor-not-allowed
+                           text-base md:text-lg font-semibold"
+                    x-bind:disabled="loading"
+                    x-text="loading ? 'Finding Books...' : 'Find Recommendations'">
+                </button>
             </div>
         </div>
         
-        <div id="results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+        <div id="results" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mt-8 md:mt-12">
             <!-- Results will be populated here -->
         </div>
     </div>
