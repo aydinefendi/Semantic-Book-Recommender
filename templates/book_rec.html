@@ -37,6 +37,22 @@
         .input-focus:focus {
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
         }
+
+        @media (max-width: 768px) {
+            .arrow-mobile {
+                display: none !important;
+            }
+            .click-me-mobile {
+                display: none !important;
+            }
+            .container {
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+            body {
+                overflow-x: hidden;
+            }
+        }
     </style>
 </head>
 
@@ -50,7 +66,7 @@
             <!-- Arrow image pointing to the input -->
             <img src="{{ url_for('static', filename='the_arrow.png') }}" 
                  alt="Arrow pointing down" 
-                 class="absolute -top-36 left-80 w-40 h-40">
+                 class="arrow-mobile absolute -top-36 left-80 w-40 h-40">
         </div>
         
         <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-8 card-shadow mt-30">
@@ -65,7 +81,7 @@
                                focus:outline-none focus:border-blue-500
                                text-gray-700 placeholder-gray-400"
                         rows="4"
-                        placeholder="e.g. Recommend a book about love, adventure, and self-discovery..."></textarea>
+                        placeholder="e.g., Recommend a book about love, adventure, and self-discovery..."></textarea>
                 </div>
                
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -117,7 +133,7 @@
                     <!-- Click me image -->
                     <img src="{{ url_for('static', filename='click_me.png') }}" 
                          alt="Click me" 
-                         class="absolute -right-40 bottom-4 w-40 h-40">
+                         class="click-me-mobile absolute -right-40 bottom-4 w-40 h-40">
                 </div>
             </div>
         </div>
